@@ -55,24 +55,46 @@ public class StringClass {
 //        System.out.println("Welcome " + name);
 //
 //    }
+//    public static void main(String[] args) {
+//        Scanner scanner = new Scanner(System.in);
+//        System.out.println("Enter A Word");
+//        String word = scanner.next();
+//        word = word.toLowerCase();
+//
+//        String message = word + " starts with a ";
+//
+//        if (word.startsWith("a")
+//                || word.startsWith("e")
+//                || word.startsWith("i")
+//                || word.startsWith("o")
+//                || word.startsWith("u")) {
+//            message += "vowel";
+//        } else {
+//            message += "consonant";
+//        }
+//        System.out.println(message);
+//
+//    }
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter A Word");
-        String word = scanner.next();
-        word = word.toLowerCase();
+        System.out.println("Enter Your Username");
+        String userName = scanner.next();
 
-        String message = word + " starts with a ";
-
-        if (word.startsWith("a")
-                || word.startsWith("e")
-                || word.startsWith("i")
-                || word.startsWith("o")
-                || word.startsWith("u")) {
-            message += "vowel";
-        } else {
-            message += "consonant";
+        if (userName.length() < 4 || userName.length() > 10) {
+            System.out.println("Username must contain more than 3 characters and can be upto 10 characters");
+            return;
         }
-        System.out.println(message);
+
+        System.out.println("Enter Your Password");
+        String password = scanner.next();
+
+        if (userName.trim().equalsIgnoreCase("SkipKhan") && password.equals("OMG123")) {
+            String message = String.format("Welcome %s", userName);
+            System.out.println(message);
+        } else {
+            System.out.println("Wrong Credentials (Invalid Username or Password)");
+        }
 
     }
 
