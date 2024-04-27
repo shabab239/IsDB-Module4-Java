@@ -1,1 +1,2 @@
 java.lang does not need to be imported.
+Scanner(System.in) -> don't close. Any other Scanner -> close.
