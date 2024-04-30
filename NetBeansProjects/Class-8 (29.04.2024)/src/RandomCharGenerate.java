@@ -1,4 +1,6 @@
 
+import java.util.Random;
+
 /**
  *
  * @author Shabab (1281539)
@@ -21,18 +23,25 @@ public class RandomCharGenerate {
     }
 
     public static char getRandomCharOrNumber() {
-        double numberOrChar = Math.random();
+        Random random = new Random();
+        int choice = random.nextInt(1, 4);
 
-        if (numberOrChar < 0.3) {
-            int asciiValueNumber = (int) (Math.random() * (57 - 48 + 1)) + 48;
-            return (char) asciiValueNumber;
+        char result = ' ';
+        switch (choice) {
+            case 1:
+                int asciiValueNumber = random.nextInt(48, 58);
+                result = (char) asciiValueNumber;
+                break;
+            case 2:
+                int asciiValueUppercase = random.nextInt(65, 91);
+                result = (char) asciiValueUppercase;
+                break;
+            case 3:
+                int asciiValueLowercase = random.nextInt(97, 123);
+                result = (char) asciiValueLowercase;
+                break;
         }
-        if (numberOrChar > 0.4 && numberOrChar < 0.7) {
-            int asciiValueUppercaseChar = (int) (Math.random() * (90 - 65 + 1)) + 65;
-            return (char) asciiValueUppercaseChar;
-        }
-        int asciiValueLowercaseChar = (int) (Math.random() * (122 - 97 + 1)) + 97;
-        return (char) asciiValueLowercaseChar;
+        return result;
     }
 
 }
