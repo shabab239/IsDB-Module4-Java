@@ -31,7 +31,7 @@ public class Palindrome {
             reversedWord += character;
         }
         
-        return word.equalsIgnoreCase(reversedWord);
+        return word.equals(reversedWord);
     }
     
 }
