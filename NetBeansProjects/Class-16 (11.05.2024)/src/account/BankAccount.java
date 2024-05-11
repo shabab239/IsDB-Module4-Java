@@ -1,10 +1,13 @@
 package account;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author Shabab-1281539
  */
-public abstract class BankAccount {
+public abstract class BankAccount implements MyBank {
 
     private double balance;
 
@@ -20,6 +23,14 @@ public abstract class BankAccount {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    @Override
+    public List getClientList() {
+        ArrayList<String> clients = new ArrayList();
+        clients.add("Skip");
+
+        return clients;
     }
 
 }

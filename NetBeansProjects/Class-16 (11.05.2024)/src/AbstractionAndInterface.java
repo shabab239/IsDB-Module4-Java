@@ -4,6 +4,7 @@ import account.CheckingAccount;
 import account.SavingsAccount;
 import geometry.Circle;
 import geometry.GeometricObject;
+import java.util.Arrays;
 
 /**
  *
@@ -34,6 +35,9 @@ public class AbstractionAndInterface {
         System.out.println("Balance After Deposit: " + checkingAccount.getBalance());
         checkingAccount.withdraw(7000);
         System.out.println("Balance After Withdraw: " + checkingAccount.getBalance());
+
+        System.out.println(Arrays.asList(checkingAccount.getClientList()));
+
     }
 
 }
