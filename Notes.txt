@@ -1,3 +1,14 @@
 java.lang does not need to be imported.
 Scanner(System.in) -> don't close. Any other Scanner -> close.
 https://www.baeldung.com/java-abstract-class
+ArrayList default initial capacity - 10
+Hashset default initial capacity - 16, load factor 0.75 (ranges from 0 to 1)
+HashSet - not ordered, LinkedHashSet - ordered
+
+Set<String> stringLinkedSet = new LinkedHashSet<>(); //sorted //default initial capacity - 16, load factor 0.75 (ranges from 0 to 1)
+        stringLinkedSet.add("LOL");
+        stringLinkedSet.add("LMAO");
+        stringLinkedSet.add("LOL"); //this wont be in the hashset
+        
+        System.out.println(stringLinkedSet);
+
