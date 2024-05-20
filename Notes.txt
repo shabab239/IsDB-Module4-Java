@@ -12,3 +12,12 @@ Set<String> stringLinkedSet = new LinkedHashSet<>(); //sorted //default initial 
         
         System.out.println(stringLinkedSet);
 
+
+Type Parameters in Java Generics
+The type parameters naming conventions are important to learn generics thoroughly. The common type parameters are as follows:
+
+T – Type
+E – Element
+K – Key
+N – Number
+V – Value
