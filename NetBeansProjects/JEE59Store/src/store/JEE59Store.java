@@ -1,4 +1,3 @@
-
 package store;
 
 import java.sql.PreparedStatement;
@@ -261,6 +260,17 @@ public class JEE59Store extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    public void calculateTotalPrice() {
+        try {
+            if (!productUnitPriceField.getText().isBlank() && !productQuantityField.getText().isBlank()) {
+                Double totalPrice = Double.valueOf(fieldUnitPrice.getText()) * Double.valueOf(fieldQuantity.getText());
+                fieldTotalPrice.setText(String.valueOf(totalPrice));
+            }
+        } catch (Exception e) {
+            fieldTotalPrice.setText("");
         }
     }
 
