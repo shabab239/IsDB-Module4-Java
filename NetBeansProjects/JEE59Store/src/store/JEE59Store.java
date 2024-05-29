@@ -127,7 +127,7 @@ public class JEE59Store extends javax.swing.JFrame {
             }
 
             ps.setInt(3, quantity);
-            
+
             if (salesPrice != null) {
                 ps.setDouble(4, salesPrice);
             } else {
@@ -140,6 +140,41 @@ public class JEE59Store extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Product Added Successfully");
             loadProductTableData();
             resetProductFields();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                dBUtil.getConnection().close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public void updateProduct() {
+        if (productIdField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Please Select a Product First");
+            return;
+        }
+        try {
+            ProductTableModel model = (ProductTableModel) productListTable.getModel();
+            Product selectedProduct = model.getProductAt(productListTable.getSelectedRow());
+            
+            String sql = "update product set name = ?, unitPrice = ?, quantity = ?, salesPrice = ? where id = ?;";
+            PreparedStatement ps = dBUtil.getConnection().prepareStatement(sql);
+
+            ps.setString(1, selectedProduct.getName());
+            ps.setDouble(2, selectedProduct.getUnitPrice());
+            ps.setInt(3, selectedProduct.getQuantity());
+            ps.setDouble(4, selectedProduct.getSalesPrice());
+            ps.setLong(5, selectedProduct.getId());
+
+            ps.executeUpdate();
+            ps.close();
+
+            loadProductTableData();
+
+            JOptionPane.showMessageDialog(rootPane, "Product Updated Successfully");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -284,7 +319,12 @@ public class JEE59Store extends javax.swing.JFrame {
             }
         });
 
-        editProductBtn.setText("Edit");
+        editProductBtn.setText("Update");
+        editProductBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                editProductBtnMouseClicked(evt);
+            }
+        });
 
         resetProductBtn.setText("Reset");
 
@@ -331,6 +371,11 @@ public class JEE59Store extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        productListTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                productListTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(productListTable);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -364,7 +409,7 @@ public class JEE59Store extends javax.swing.JFrame {
                                         .addComponent(editProductBtn))
                                     .addComponent(productUnitPriceField, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel9)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -377,10 +422,10 @@ public class JEE59Store extends javax.swing.JFrame {
                                 .addComponent(resetProductBtn)
                                 .addGap(18, 18, 18)
                                 .addComponent(deleteProductBtn))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addGap(18, 18, 18)
-                                .addComponent(productQuantityField)))
+                                .addComponent(productQuantityField, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 23, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
@@ -727,6 +772,25 @@ public class JEE59Store extends javax.swing.JFrame {
     private void addProductBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProductBtnMouseClicked
         addProduct();
     }//GEN-LAST:event_addProductBtnMouseClicked
+
+    private void productListTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productListTableMouseClicked
+        int selectedRowIndex = productListTable.getSelectedRow();
+
+        if (selectedRowIndex != -1) {
+            ProductTableModel model = (ProductTableModel) productListTable.getModel();
+            Product selectedProduct = model.getProductAt(selectedRowIndex);
+
+            productIdField.setText(String.valueOf(selectedProduct.getId()));
+            productNameField.setText(selectedProduct.getName());
+            productUnitPriceField.setText(String.valueOf(selectedProduct.getUnitPrice()));
+            productQuantityField.setText(String.valueOf(selectedProduct.getQuantity()));
+            productSalesPriceField.setText(String.valueOf(selectedProduct.getSalesPrice()));
+        }
+    }//GEN-LAST:event_productListTableMouseClicked
+
+    private void editProductBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editProductBtnMouseClicked
+        updateProduct();
+    }//GEN-LAST:event_editProductBtnMouseClicked
 
     /**
      * @param args the command line arguments

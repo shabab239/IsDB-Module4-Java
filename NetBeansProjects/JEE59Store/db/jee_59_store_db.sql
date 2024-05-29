@@ -27,21 +27,21 @@ CREATE TABLE `product` (
   `quantity` int(11) NOT NULL,
   `salesPrice` double DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `product` */
 
 insert  into `product`(`id`,`name`,`unitPrice`,`quantity`,`salesPrice`) values 
-(1,'Apples',2.99,100,3.99),
-(2,'Bananas',1.49,150,2.49),
-(3,'Milk',3.25,50,4.99),
-(4,'Bread',2.75,80,3.99),
-(5,'Eggs',2.99,120,4.49),
-(6,'Chicken',6.99,60,9.99),
-(7,'Potatoes',1.99,200,2.99),
-(8,'Tomatoes',3.49,90,4.99),
-(9,'Rice',4.75,110,6.99),
-(10,'Pasta',1.5,70,2.49);
+(14,'Apples',80,100,120),
+(15,'Bananas',40,150,70),
+(16,'Milk',25,50,50),
+(17,'Bread',20,80,40),
+(18,'Eggs',15,120,30),
+(19,'Chicken',400,60,600),
+(20,'Potatoes',50,200,80),
+(21,'Tomatoes',120,90,200),
+(22,'Rice',70,110,100),
+(23,'Pasta',40,70,60);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

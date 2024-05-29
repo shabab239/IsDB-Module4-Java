@@ -27,7 +27,7 @@ public class ProductTableModel extends AbstractTableModel {
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
 
-    public Product getProduct(int rowIndex) {
+    public Product getProductAt(int rowIndex) {
         return products.get(rowIndex);
     }
 
