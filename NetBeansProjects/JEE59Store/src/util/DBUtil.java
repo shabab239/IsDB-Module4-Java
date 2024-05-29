@@ -14,7 +14,7 @@ public class DBUtil {
     private Connection connection;
     private String dbURL = "jdbc:mysql://localhost:3306/jee_59_store";
     private String username = "root";
-    private String password = ""; //Adjust in TSP
+    private String password = "1234"; //Adjust in TSP
 
     public Connection getConnection() {
         try {

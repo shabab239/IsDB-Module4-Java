@@ -4,7 +4,6 @@ package model;
  *
  * @author Shabab Ahmed
  */
-
 public class Product {
 
     private Long id;
@@ -13,7 +12,9 @@ public class Product {
     private Integer quantity;
     private Double salesPrice;
 
-    // Constructor
+    public Product() {
+    }
+
     public Product(Long id, String name, Double unitPrice, Integer quantity, Double salesPrice) {
         this.id = id;
         this.name = name;
@@ -22,7 +23,6 @@ public class Product {
         this.salesPrice = salesPrice;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -63,15 +63,4 @@ public class Product {
         this.salesPrice = salesPrice;
     }
 
-    // toString method for easy debugging and display
-    @Override
-    public String toString() {
-        return "Product{"
-                + "id=" + id
-                + ", name='" + name + '\''
-                + ", unitPrice=" + unitPrice
-                + ", quantity=" + quantity
-                + ", salesPrice=" + salesPrice
-                + '}';
-    }
 }
