@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import model.Product;
 import model.ProductTableModel;
 import util.DBUtil;
@@ -31,6 +33,40 @@ public class JEE59Store extends javax.swing.JFrame {
                     loadProductTableData();
                 }
             }
+        });
+        productUnitPriceField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                calculateTotalPrice();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                calculateTotalPrice();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                calculateTotalPrice();
+            }
+
+        });
+        productQuantityField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                calculateTotalPrice();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                calculateTotalPrice();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                calculateTotalPrice();
+            }
+
         });
     }
 
@@ -266,11 +302,11 @@ public class JEE59Store extends javax.swing.JFrame {
     public void calculateTotalPrice() {
         try {
             if (!productUnitPriceField.getText().isBlank() && !productQuantityField.getText().isBlank()) {
-                Double totalPrice = Double.valueOf(fieldUnitPrice.getText()) * Double.valueOf(fieldQuantity.getText());
-                fieldTotalPrice.setText(String.valueOf(totalPrice));
+                Double totalPrice = Double.valueOf(productUnitPriceField.getText()) * Double.valueOf(productQuantityField.getText());
+                productTotalPriceField.setText(String.valueOf(totalPrice));
             }
         } catch (Exception e) {
-            fieldTotalPrice.setText("");
+            productTotalPriceField.setText("");
         }
     }
 
