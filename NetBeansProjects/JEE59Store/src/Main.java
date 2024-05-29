@@ -5,7 +5,7 @@ import store.JEE59Store;
 
 /**
  *
- * @author shaba
+ * @author Shabab Ahmed
  */
 public class Main {
 

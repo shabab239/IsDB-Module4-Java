@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  *
- * @author shaba
+ * @author Shabab Ahmed
  */
 public class ProductTableModel extends AbstractTableModel {
 

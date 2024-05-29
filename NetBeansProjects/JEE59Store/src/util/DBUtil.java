@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 
 /**
  *
- * @author shaba
+ * @author Shabab Ahmed
  */
 public class DBUtil {
 
@@ -14,7 +14,7 @@ public class DBUtil {
     private Connection connection;
     private String dbURL = "jdbc:mysql://localhost:3306/jee_59_store";
     private String username = "root";
-    private String password = "";
+    private String password = ""; //Adjust in TSP
 
     public Connection getConnection() {
         try {

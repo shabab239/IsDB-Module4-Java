@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package store;
 
 import java.sql.PreparedStatement;
@@ -10,14 +7,13 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.table.DefaultTableModel;
 import model.Product;
 import model.ProductTableModel;
 import util.DBUtil;
 
 /**
  *
- * @author shaba
+ * @author Shabab Ahmed
  */
 public class JEE59Store extends javax.swing.JFrame {
 
@@ -222,13 +218,46 @@ public class JEE59Store extends javax.swing.JFrame {
             ps.close();
 
             loadProductTableData();
-
+            resetProductFields();
             JOptionPane.showMessageDialog(rootPane, "Product Updated Successfully");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
                 dBUtil.getConnection().close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public void deleteProduct() {
+        if (productIdField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Please Select a Product First");
+            return;
+        }
+
+        try {
+            Long productId = Long.parseLong(productIdField.getText().trim());
+
+            String sql = "DELETE FROM product WHERE id = ?;";
+            PreparedStatement ps = dBUtil.getConnection().prepareStatement(sql);
+
+            ps.setLong(1, productId);
+
+            ps.executeUpdate();
+            ps.close();
+
+            loadProductTableData();
+            resetProductFields();
+            JOptionPane.showMessageDialog(rootPane, "Product Deleted Successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (dBUtil.getConnection() != null) {
+                    dBUtil.getConnection().close();
+                }
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -383,6 +412,11 @@ public class JEE59Store extends javax.swing.JFrame {
         });
 
         deleteProductBtn.setText("Delete");
+        deleteProductBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deleteProductBtnMouseClicked(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -659,8 +693,8 @@ public class JEE59Store extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel11)
-                .addGap(18, 18, 18)
+                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(salesDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -849,6 +883,10 @@ public class JEE59Store extends javax.swing.JFrame {
     private void resetProductBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resetProductBtnMouseClicked
         resetProductFields();
     }//GEN-LAST:event_resetProductBtnMouseClicked
+
+    private void deleteProductBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteProductBtnMouseClicked
+        deleteProduct();
+    }//GEN-LAST:event_deleteProductBtnMouseClicked
 
     /**
      * @param args the command line arguments
