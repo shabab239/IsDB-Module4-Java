@@ -4,17 +4,60 @@
  */
 package store;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
+import model.Product;
+import model.ProductTableModel;
+import util.DBUtil;
+
 /**
  *
  * @author shaba
  */
 public class JEE59Store extends javax.swing.JFrame {
 
+    DBUtil dBUtil;
+
     /**
      * Creates new form JEE59Store
      */
     public JEE59Store() {
         initComponents();
+        loadProductTableData();
+    }
+
+    public void loadProductTableData() {
+        ProductTableModel productTableModel = new ProductTableModel();
+
+        try {
+            String sql = "SELECT * FROM product;";
+            PreparedStatement ps = dBUtil.getConnection().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                String name = rs.getString("name");
+                Double unitPrice = rs.getDouble("unitPrice");
+                Integer quantity = rs.getInt("quantity");
+                Double salesPrice = rs.getDouble("salesPrice");
+
+                Product product = new Product(id, name, unitPrice, quantity, salesPrice);
+                productTableModel.addProduct(product);
+            }
+
+            productListTable.setModel(productTableModel);
+            ps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                dBUtil.getConnection().close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -243,8 +286,8 @@ public class JEE59Store extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(productIdField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -271,7 +314,7 @@ public class JEE59Store extends javax.swing.JFrame {
                 .addGap(36, 36, 36)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE))
         );
 
         tabbedPane.addTab("Product", jPanel3);
@@ -438,7 +481,7 @@ public class JEE59Store extends javax.swing.JFrame {
                 .addGap(36, 36, 36)
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE))
         );
 
         tabbedPane.addTab("Sales", jPanel4);
@@ -451,7 +494,7 @@ public class JEE59Store extends javax.swing.JFrame {
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 515, Short.MAX_VALUE)
+            .addGap(0, 565, Short.MAX_VALUE)
         );
 
         tabbedPane.addTab("Stock", jPanel5);
@@ -464,12 +507,12 @@ public class JEE59Store extends javax.swing.JFrame {
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 515, Short.MAX_VALUE)
+            .addGap(0, 565, Short.MAX_VALUE)
         );
 
         tabbedPane.addTab("Report", jPanel6);
 
-        getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(184, 94, 610, 550));
+        getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(184, 44, 610, 600));
 
         jButton1.setText("Product");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -574,6 +617,7 @@ public class JEE59Store extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         tabbedPane.setSelectedIndex(0);
+        loadProductTableData();
     }//GEN-LAST:event_jButton1MouseClicked
 
     /**
