@@ -7,6 +7,9 @@ package store;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import model.Product;
 import model.ProductTableModel;
@@ -18,7 +21,7 @@ import util.DBUtil;
  */
 public class JEE59Store extends javax.swing.JFrame {
 
-    DBUtil dBUtil;
+    DBUtil dBUtil = new DBUtil();
 
     /**
      * Creates new form JEE59Store
@@ -26,9 +29,18 @@ public class JEE59Store extends javax.swing.JFrame {
     public JEE59Store() {
         initComponents();
         loadProductTableData();
+        tabbedPane.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (tabbedPane.getSelectedIndex() == 0) {
+                    loadProductTableData();
+                }
+            }
+        });
     }
 
     public void loadProductTableData() {
+        System.out.println("done");
         ProductTableModel productTableModel = new ProductTableModel();
 
         try {
@@ -58,6 +70,94 @@ public class JEE59Store extends javax.swing.JFrame {
                 ex.printStackTrace();
             }
         }
+    }
+
+    public void addProduct() {
+        try {
+            String productName;
+            Double unitPrice = null;
+            Integer quantity;
+            Double salesPrice = null;
+
+            if (productNameField.getText().isBlank()) {
+                JOptionPane.showMessageDialog(rootPane, "Product Name is Required");
+                return;
+            }
+
+            if (productQuantityField.getText().isBlank()) {
+                JOptionPane.showMessageDialog(rootPane, "Product Quantity is Required");
+                return;
+            }
+
+            productName = productNameField.getText().trim();
+
+            try {
+                if (!productUnitPriceField.getText().isBlank()) {
+                    unitPrice = Double.valueOf(productUnitPriceField.getText().trim());
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(rootPane, "Invalid Unit Price");
+                return;
+            }
+
+            try {
+                quantity = Integer.valueOf(productQuantityField.getText().trim());
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(rootPane, "Invalid Quantity");
+                return;
+            }
+
+            try {
+                if (!productSalesPriceField.getText().isBlank()) {
+                    salesPrice = Double.valueOf(productSalesPriceField.getText().trim());
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(rootPane, "Invalid Sales Price");
+                return;
+            }
+
+            String sql = "INSERT INTO product(name, unitPrice, quantity, salesPrice) VALUES (?, ?, ?, ?);";
+            PreparedStatement ps = dBUtil.getConnection().prepareStatement(sql);
+            ps.setString(1, productName);
+
+            if (unitPrice != null) {
+                ps.setDouble(2, unitPrice);
+            } else {
+                ps.setNull(2, java.sql.Types.DOUBLE);
+            }
+
+            ps.setInt(3, quantity);
+            
+            if (salesPrice != null) {
+                ps.setDouble(4, salesPrice);
+            } else {
+                ps.setNull(4, java.sql.Types.DOUBLE);
+            }
+
+            ps.executeUpdate();
+            ps.close();
+
+            JOptionPane.showMessageDialog(rootPane, "Product Added Successfully");
+            loadProductTableData();
+            resetProductFields();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                dBUtil.getConnection().close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public void resetProductFields() {
+        productIdField.setText("");
+        productNameField.setText("");
+        productUnitPriceField.setText("");
+        productQuantityField.setText("");
+        productSalesPriceField.setText("");
+        productTotalPriceField.setText("");
     }
 
     /**
@@ -178,6 +278,11 @@ public class JEE59Store extends javax.swing.JFrame {
         jLabel9.setText("Sales Price");
 
         addProductBtn.setText("Add");
+        addProductBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addProductBtnMouseClicked(evt);
+            }
+        });
 
         editProductBtn.setText("Edit");
 
@@ -617,8 +722,11 @@ public class JEE59Store extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         tabbedPane.setSelectedIndex(0);
-        loadProductTableData();
     }//GEN-LAST:event_jButton1MouseClicked
+
+    private void addProductBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProductBtnMouseClicked
+        addProduct();
+    }//GEN-LAST:event_addProductBtnMouseClicked
 
     /**
      * @param args the command line arguments

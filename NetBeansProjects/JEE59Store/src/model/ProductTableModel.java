@@ -1,17 +1,17 @@
 package model;
 
-/**
- *
- * @author shaba
- */
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * @author shaba
+ */
 public class ProductTableModel extends AbstractTableModel {
 
     private final List<Product> products;
-    private final String[] columnNames = {"Name", "Unit Price", "Quantity", "Sales Price"};
+    private final String[] columnNames = {"SL", "Name", "Unit Price", "Quantity", "Sales Price"};
 
     public ProductTableModel() {
         this.products = new ArrayList<>();
@@ -55,12 +55,14 @@ public class ProductTableModel extends AbstractTableModel {
         Product product = products.get(rowIndex);
         switch (columnIndex) {
             case 0:
-                return product.getName();
+                return rowIndex + 1;
             case 1:
-                return product.getUnitPrice();
+                return product.getName();
             case 2:
-                return product.getQuantity();
+                return product.getUnitPrice();
             case 3:
+                return product.getQuantity();
+            case 4:
                 return product.getSalesPrice();
             default:
                 return null;
@@ -71,16 +73,16 @@ public class ProductTableModel extends AbstractTableModel {
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         Product product = products.get(rowIndex);
         switch (columnIndex) {
-            case 0:
+            case 1:
                 product.setName((String) aValue);
                 break;
-            case 1:
+            case 2:
                 product.setUnitPrice((Double) aValue);
                 break;
-            case 2:
+            case 3:
                 product.setQuantity((Integer) aValue);
                 break;
-            case 3:
+            case 4:
                 product.setSalesPrice((Double) aValue);
                 break;
         }
@@ -89,6 +91,6 @@ public class ProductTableModel extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return true;
+        return false;
     }
 }
