@@ -157,17 +157,66 @@ public class JEE59Store extends javax.swing.JFrame {
             return;
         }
         try {
-            ProductTableModel model = (ProductTableModel) productListTable.getModel();
-            Product selectedProduct = model.getProductAt(productListTable.getSelectedRow());
-            
+            if (productNameField.getText().isBlank()) {
+                JOptionPane.showMessageDialog(rootPane, "Product Name is Required");
+                return;
+            }
+
+            if (productQuantityField.getText().isBlank()) {
+                JOptionPane.showMessageDialog(rootPane, "Product Quantity is Required");
+                return;
+            }
+
+            long productId = Long.parseLong(productIdField.getText().trim());
+            String productName = productNameField.getText().trim();
+            Integer quantity;
+
+            try {
+                quantity = Integer.valueOf(productQuantityField.getText().trim());
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(rootPane, "Invalid Quantity");
+                return;
+            }
+
+            Double unitPrice = null;
+            if (!productUnitPriceField.getText().trim().isEmpty()) {
+                try {
+                    if (!productUnitPriceField.getText().isBlank()) {
+                        unitPrice = Double.valueOf(productUnitPriceField.getText().trim());
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(rootPane, "Invalid Unit Price");
+                    return;
+                }
+            }
+            Double salesPrice = null;
+            if (!productSalesPriceField.getText().trim().isEmpty()) {
+                try {
+                    if (!productSalesPriceField.getText().isBlank()) {
+                        salesPrice = Double.valueOf(productSalesPriceField.getText().trim());
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(rootPane, "Invalid Sales Price");
+                    return;
+                }
+            }
+
             String sql = "update product set name = ?, unitPrice = ?, quantity = ?, salesPrice = ? where id = ?;";
             PreparedStatement ps = dBUtil.getConnection().prepareStatement(sql);
 
-            ps.setString(1, selectedProduct.getName());
-            ps.setDouble(2, selectedProduct.getUnitPrice());
-            ps.setInt(3, selectedProduct.getQuantity());
-            ps.setDouble(4, selectedProduct.getSalesPrice());
-            ps.setLong(5, selectedProduct.getId());
+            ps.setString(1, productName);
+            if (unitPrice != null) {
+                ps.setDouble(2, unitPrice);
+            } else {
+                ps.setNull(2, java.sql.Types.DOUBLE);
+            }
+            ps.setInt(3, quantity);
+            if (salesPrice != null) {
+                ps.setDouble(4, salesPrice);
+            } else {
+                ps.setNull(4, java.sql.Types.DOUBLE);
+            }
+            ps.setLong(5, productId);
 
             ps.executeUpdate();
             ps.close();
@@ -327,6 +376,11 @@ public class JEE59Store extends javax.swing.JFrame {
         });
 
         resetProductBtn.setText("Reset");
+        resetProductBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                resetProductBtnMouseClicked(evt);
+            }
+        });
 
         deleteProductBtn.setText("Delete");
 
@@ -791,6 +845,10 @@ public class JEE59Store extends javax.swing.JFrame {
     private void editProductBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editProductBtnMouseClicked
         updateProduct();
     }//GEN-LAST:event_editProductBtnMouseClicked
+
+    private void resetProductBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resetProductBtnMouseClicked
+        resetProductFields();
+    }//GEN-LAST:event_resetProductBtnMouseClicked
 
     /**
      * @param args the command line arguments
