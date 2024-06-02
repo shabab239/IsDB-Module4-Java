@@ -9,17 +9,15 @@ public class Product {
     private Long id;
     private String name;
     private Double unitPrice;
-    private Integer quantity;
     private Double salesPrice;
 
     public Product() {
     }
 
-    public Product(Long id, String name, Double unitPrice, Integer quantity, Double salesPrice) {
+    public Product(Long id, String name, Double unitPrice, Double salesPrice) {
         this.id = id;
         this.name = name;
         this.unitPrice = unitPrice;
-        this.quantity = quantity;
         this.salesPrice = salesPrice;
     }
 
@@ -45,14 +43,6 @@ public class Product {
 
     public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
     }
 
     public Double getSalesPrice() {

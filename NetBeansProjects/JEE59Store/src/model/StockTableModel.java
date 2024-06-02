@@ -2,42 +2,43 @@ package model;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  *
  * @author Shabab Ahmed
  */
-public class ProductTableModel extends AbstractTableModel {
+public class StockTableModel extends AbstractTableModel {
 
-    private final List<Product> products;
-    private final String[] columnNames = {"SL", "Name", "Unit Price", "Sales Price"};
+    private final List<Stock> stockList;
+    private final String[] columnNames = {"SL", "Name", "Quantity", "Date"};
 
-    public ProductTableModel() {
-        this.products = new ArrayList<>();
+    public StockTableModel() {
+        this.stockList = new ArrayList<>();
     }
 
-    public void addProduct(Product product) {
-        products.add(product);
-        fireTableRowsInserted(products.size() - 1, products.size() - 1);
+    public void addProduct(Stock stock) {
+        stockList.add(stock);
+        fireTableRowsInserted(stockList.size() - 1, stockList.size() - 1);
     }
 
     public void removeProduct(int rowIndex) {
-        products.remove(rowIndex);
+        stockList.remove(rowIndex);
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
 
-    public Product getProductAt(int rowIndex) {
-        return products.get(rowIndex);
+    public Stock getProductAt(int rowIndex) {
+        return stockList.get(rowIndex);
     }
 
     public Long getProductId(int rowIndex) {
-        return products.get(rowIndex).getId();
+        return stockList.get(rowIndex).getId();
     }
 
     @Override
     public int getRowCount() {
-        return products.size();
+        return stockList.size();
     }
 
     @Override
@@ -52,16 +53,16 @@ public class ProductTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Product product = products.get(rowIndex);
+        Stock stock = stockList.get(rowIndex);
         switch (columnIndex) {
             case 0:
                 return rowIndex + 1;
             case 1:
-                return product.getName();
+                return stock.getName();
             case 2:
-                return product.getUnitPrice();
+                return stock.getQuantity();
             case 3:
-                return product.getSalesPrice();
+                return stock.getDate();
             default:
                 return null;
         }
@@ -69,16 +70,14 @@ public class ProductTableModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        Product product = products.get(rowIndex);
+        Stock stock = stockList.get(rowIndex);
         switch (columnIndex) {
             case 1:
-                product.setName((String) aValue);
-                break;
+                stock.setName((String) aValue);
             case 2:
-                product.setUnitPrice((Double) aValue);
-                break;
+                stock.setQuantity((Integer) aValue);
             case 3:
-                product.setSalesPrice((Double) aValue);
+                stock.setDate((Date) aValue);
                 break;
         }
         fireTableCellUpdated(rowIndex, columnIndex);
