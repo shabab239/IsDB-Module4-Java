@@ -18,12 +18,21 @@ public class JDBCTest {
         try {
 
             ps = connection.prepareStatement("insert into user(name,mobile,email,address) values(?, ?, ?, ?);");
+            
             ps.setString(1, "Shabab");
             ps.setString(2, "01710295968");
             ps.setString(3, "sabab239.1@gmail.com");
             ps.setString(4, "Dhaka");
 
             ps.executeUpdate();
+            
+            ps.setString(1, "Samin");
+            ps.setString(2, "01931991821");
+            ps.setString(3, "yolo@gmail.com");
+            ps.setString(4, "Dhaka");
+
+            ps.executeUpdate();
+            
             ps.close();
             
             ps = connection.prepareStatement("select * from user;");
